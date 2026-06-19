@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Post — John Cremers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --cream: #ede8d8; --dark: #2b2724; --muted: #6b6460; --accent: #8b7355; }
+html { scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--dark); font-family: 'Inter', sans-serif; font-weight: 300; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 3rem; background: var(--cream);
+  border-bottom: 1px solid rgba(43,39,36,0.1);
+}
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; letter-spacing: 0.04em; color: var(--dark); text-decoration: none; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { text-decoration: none; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--dark); }
+
+/* LAYOUT */
+.page-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 7rem 3rem 6rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 3rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--dark); }
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.post-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.post-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--muted);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+
+#post-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(43,39,36,0.1);
+}
+
+#post-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-bottom: 1.4rem;
+}
+
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(43,39,36,0.1);
+}
+.post-nav a {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--dark);
+  text-decoration: none;
+  max-width: 45%;
+  transition: opacity 0.2s;
+}
+.post-nav a:hover { opacity: 0.5; }
+.post-nav .nav-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.post-nav .next { text-align: right; margin-left: auto; }
+
+footer { border-top: 1px solid rgba(43,39,36,0.1); padding: 2rem 3rem; text-align: center; font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .page-wrapper { padding: 6rem 1.5rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">John Cremers Website &amp; Blog</a>
+  <ul class="nav-links">
+    <li><a href="index.html#socials">Socials</a></li>
+    <li><a href="index.html#cremadillas">Business</a></li>
+    <li><a href="index.html#prints">Prints</a></li>
+    <li><a href="index.html#contact-section">Contact</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <a href="blog.html" class="back-link">&larr; Back to all posts</a>
+
+  <div class="post-meta">
+    <span class="post-date" id="post-date"></span>
+    <span class="post-tag" id="post-tag"></span>
+  </div>
+
+  <h1 id="post-title"></h1>
+
+  <div id="post-body"></div>
+
+  <div class="post-nav">
+    <a id="prev-post" class="prev" href="#"></a>
+    <a id="next-post" class="next" href="#"></a>
+  </div>
+</div>
+
+<footer>&copy; 2026 John Cremers &nbsp;&middot;&nbsp; All rights reserved</footer>
+
+<script>
+// ---- Post content lives here. Edit title/date/tag/body for each post. ----
+// body: an array of strings, one per paragraph. Add or remove strings to add/remove paragraphs.
+const posts = {
+  "1": {
+    date: "June 10, 2026",
+    tag: "Prints",
+    title: "New Print Drop Coming Soon",
+    body: [
+      "I've been working on a new series of prints over the past few weeks and I'm really excited about how they're turning out. Expect something a little different from my usual style — more detail, bolder colors.",
+      "[Placeholder: add more detail here about the new series — what inspired it, what materials or techniques you're using, and what makes it different from previous drops.]",
+      "[Placeholder: talk about timeline — when you expect to launch, how many pieces, and where people can find them.]",
+      "Stay tuned for the drop date."
+    ]
+  },
+  "2": {
+    date: "May 28, 2026",
+    tag: "Food",
+    title: "How Cremadillas Started",
+    body: [
+      "A lot of people ask me how I got into making quesadillas for people. It honestly started by accident freshman year. I made a batch for my floor and the next thing I knew people were sliding money under my door.",
+      "[Placeholder: expand on the origin story — what dorm/floor this happened on, what the first batch looked like, how word spread.]",
+      "[Placeholder: talk about how it grew from a one-off into something you kept doing — first paying customers, word of mouth, any funny early memories.]",
+      "[Placeholder: close with where Cremadillas is today and what you're hoping it becomes.]"
+    ]
+  },
+  "3": {
+    date: "May 12, 2026",
+    tag: "Personal",
+    title: "End of Year Reflection",
+    body: [
+      "It's been a busy year balancing school, Cremadillas, and the print shop. I wanted to take a moment to write down what I learned, what I'd do differently, and what I'm looking forward to this summer.",
+      "[Placeholder: a few specific lessons from juggling school + two businesses — time management, what you'd change.]",
+      "[Placeholder: a highlight or two from the year — a class, a project, a moment with Cremadillas or Cremadillaprints you're proud of.]",
+      "[Placeholder: what you're looking forward to this summer.]"
+    ]
+  },
+  "4": {
+    date: "April 30, 2026",
+    tag: "Prints",
+    title: "Behind the Process: How I Make My Prints",
+    body: [
+      "People always ask what my process looks like from start to finish. From the initial sketch to the final product, every print goes through a lot of iterations before it's ready.",
+      "[Placeholder: describe your sketching process — pencil/digital, how long a piece typically takes to go from idea to first draft.]",
+      "[Placeholder: describe how you finalize and produce the print — software, paper/printing choices, what 'done' looks like.]",
+      "Here's a behind-the-scenes look at how it all comes together."
+    ]
+  },
+  "5": {
+    date: "April 14, 2026",
+    tag: "Food",
+    title: "My Favorite Quesadilla Recipe",
+    body: [
+      "After making hundreds of these, I've finally dialed in the perfect recipe. The secret is in the cheese blend and letting the tortilla get just the right amount of crispy.",
+      "[Placeholder: list out the actual ingredients and cheese blend you use.]",
+      "[Placeholder: walk through the steps — heat level, timing, flipping technique, what 'right amount of crispy' looks like.]",
+      "[Placeholder: any tips for people trying to recreate it at home.]"
+    ]
+  }
+};
+
+const order = ["1", "2", "3", "4", "5"];
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+const post = posts[id];
+
+if (!post) {
+  document.getElementById("post-title").textContent = "Post not found";
+  document.getElementById("post-body").innerHTML = "<p>Sorry, that post doesn't exist. <a href=\"blog.html\">Back to all posts</a>.</p>";
+  document.querySelector(".post-meta").style.display = "none";
+  document.querySelector(".post-nav").style.display = "none";
+} else {
+  document.title = post.title + " — John Cremers";
+  document.getElementById("post-date").textContent = post.date;
+  document.getElementById("post-tag").textContent = post.tag;
+  document.getElementById("post-title").textContent = post.title;
+  document.getElementById("post-body").innerHTML = post.body.map(p => `<p>${p}</p>`).join("");
+
+  const idx = order.indexOf(id);
+  const prevEl = document.getElementById("prev-post");
+  const nextEl = document.getElementById("next-post");
+
+  if (idx < order.length - 1) {
+    const prevId = order[idx + 1];
+    prevEl.href = `post.html?id=${prevId}`;
+    prevEl.innerHTML = `<span class="nav-label">&larr; Older</span>${posts[prevId].title}`;
+  } else {
+    prevEl.style.visibility = "hidden";
+  }
+
+  if (idx > 0) {
+    const nextId = order[idx - 1];
+    nextEl.href = `post.html?id=${nextId}`;
+    nextEl.innerHTML = `<span class="nav-label">Newer &rarr;</span>${posts[nextId].title}`;
+  } else {
+    nextEl.style.visibility = "hidden";
+  }
+}
+</script>
+
+</body>
+</html>
